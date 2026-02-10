@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Monitoring Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="page active" id="loginPage">
+        <div class="auth-container">
+            <div class="auth-box">
+                <div class="logo">
+                    <img src="https://cdn.discordapp.com/attachments/1375092845106696235/1470791241661808705/WhatsApp_Image_2025-08-26_at_3.21.37_PM.jpeg?ex=698c9495&is=698b4315&hm=3dd58943b9c2c4c2c47a9fef0aa8190fc271170ddc10197b3d9be6cf3bbf7af0&" alt="علي مهلك Logo">
+                    <h1>علي مهلك</h1>
+                </div>
+                <h2>Company Login</h2>
+                <form class="auth-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="company@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <div class="auth-footer">
+                        <p>Don't have an account? <a href="#" onclick="showPage('signupPage')">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Page -->
+    <div class="page" id="signupPage">
+        <div class="auth-container">
+            <div class="auth-box">
+                <div class="logo">
+                    <img src="https://cdn.discordapp.com/attachments/1375092845106696235/1470791241661808705/WhatsApp_Image_2025-08-26_at_3.21.37_PM.jpeg?ex=698c9495&is=698b4315&hm=3dd58943b9c2c4c2c47a9fef0aa8190fc271170ddc10197b3d9be6cf3bbf7af0&" alt="علي مهلك Logo">
+                    <h1>علي مهلك</h1>
+                </div>
+                <h2>Create Company Account</h2>
+                <form class="auth-form" id="signupForm">
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" id="companyName" placeholder="Your Company Ltd." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="company@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" placeholder="+1 (555) 123-4567" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="#" onclick="showPage('loginPage')">Sign In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="page" id="dashboardPage">
+        <div class="dashboard-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo-small">
+                        <img src="https://cdn.discordapp.com/attachments/1375092845106696235/1470791241661808705/WhatsApp_Image_2025-08-26_at_3.21.37_PM.jpeg?ex=698c9495&is=698b4315&hm=3dd58943b9c2c4c2c47a9fef0aa8190fc271170ddc10197b3d9be6cf3bbf7af0&" alt="علي مهلك Logo">
+                        <span>علي مهلك</span>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" onclick="showSection('overview')">
+                        <span class="icon">📊</span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('drivers')">
+                        <span class="icon">👥</span>
+                        <span>Drivers</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('trips')">
+                        <span class="icon">🚗</span>
+                        <span>Trips</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('alerts')">
+                        <span class="icon">⚠️</span>
+                        <span>Alerts</span>
+                        <span class="badge">12</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('assign')">
+                        <span class="icon">➕</span>
+                        <span>Assign Drivers</span>
+                    </a>
+                    <a href="#" class="nav-item" onclick="showSection('support')">
+                        <span class="icon">💬</span>
+                        <span>Support</span>
+                        <span class="badge">3</span>
+                    </a>
+                </nav>
+                <div class="sidebar-footer">
+                    <div class="user-info">
+                        <div class="avatar">
+                            <img src="https://cdn.discordapp.com/attachments/1375092845106696235/1470791241661808705/WhatsApp_Image_2025-08-26_at_3.21.37_PM.jpeg?ex=698c9495&is=698b4315&hm=3dd58943b9c2c4c2c47a9fef0aa8190fc271170ddc10197b3d9be6cf3bbf7af0&" alt="علي مهلك Logo">
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name">علي مهلك Corp</div>
+                            <div class="user-role">Administrator</div>
+                        </div>
+                    </div>
+                    <button class="btn-logout" onclick="showPage('loginPage')">
+                        <span class="icon">🚪</span>
+                        Logout
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Header -->
+                <header class="dashboard-header">
+                    <div class="header-left">
+                        <h1 id="pageTitle">Dashboard Overview</h1>
+                        <p class="header-subtitle">Monitor your fleet performance in real-time</p>
+                    </div>
+                    <div class="header-right">
+                        <div class="company-code">
+                            <label>Company Code:</label>
+                            <span class="code-value">AC-2024-7891</span>
+                            <button class="btn-copy">📋</button>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Overview Section -->
+                <section class="content-section active" id="overviewSection">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">👥</div>
+                            <div class="stat-info">
+                                <div class="stat-value">48</div>
+                                <div class="stat-label">Total Drivers</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">🚗</div>
+                            <div class="stat-info">
+                                <div class="stat-value">32</div>
+                                <div class="stat-label">Active Trips</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">⚠️</div>
+                            <div class="stat-info">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Today's Alerts</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red">🎯</div>
+                            <div class="stat-info">
+                                <div class="stat-value">94%</div>
+                                <div class="stat-label">Safety Score</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card recent-alerts">
+                            <div class="card-header">
+                                <h3>Recent Distraction Alerts</h3>
+                                <a href="#" onclick="showSection('alerts')">View All</a>
+                            </div>
+                            <div class="alerts-list">
+                                <div class="alert-item high">
+                                    <div class="alert-icon">📱</div>
+                                    <div class="alert-content">
+                                        <div class="alert-type">Phone Usage</div>
+                                        <div class="alert-driver">John Smith - Highway 101</div>
+                                        <div class="alert-time">2 minutes ago</div>
+                                    </div>
+                                    <div class="alert-status">Notified</div>
+                                </div>
+                                <div class="alert-item medium">
+                                    <div class="alert-icon">😴</div>
+                                    <div class="alert-content">
+                                        <div class="alert-type">Drowsiness Detected</div>
+                                        <div class="alert-driver">Sarah Johnson - Route 45</div>
+                                        <div class="alert-time">15 minutes ago</div>
+                                    </div>
+                                    <div class="alert-status">Notified</div>
+                                </div>
+                                <div class="alert-item low">
+                                    <div class="alert-icon">👀</div>
+                                    <div class="alert-content">
+                                        <div class="alert-type">Looking Away</div>
+                                        <div class="alert-driver">Mike Davis - Main Street</div>
+                                        <div class="alert-time">28 minutes ago</div>
+                                    </div>
+                                    <div class="alert-status">Notified</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card active-drivers">
+                            <div class="card-header">
+                                <h3>Active Drivers</h3>
+                                <span class="status-indicator online">32 Online</span>
+                            </div>
+                            <div class="drivers-quick-list">
+                                <div class="driver-quick-item">
+                                    <div class="driver-avatar">JS</div>
+                                    <div class="driver-quick-info">
+                                        <div class="driver-quick-name">John Smith</div>
+                                        <div class="driver-quick-status">On trip - 45 min</div>
+                                    </div>
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="driver-quick-item">
+                                    <div class="driver-avatar">SJ</div>
+                                    <div class="driver-quick-info">
+                                        <div class="driver-quick-name">Sarah Johnson</div>
+                                        <div class="driver-quick-status">On trip - 1.2 hrs</div>
+                                    </div>
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="driver-quick-item">
+                                    <div class="driver-avatar">MD</div>
+                                    <div class="driver-quick-info">
+                                        <div class="driver-quick-name">Mike Davis</div>
+                                        <div class="driver-quick-status">On trip - 23 min</div>
+                                    </div>
+                                    <div class="status-dot online"></div>
+                                </div>
+                                <div class="driver-quick-item">
+                                    <div class="driver-avatar">EB</div>
+                                    <div class="driver-quick-info">
+                                        <div class="driver-quick-name">Emily Brown</div>
+                                        <div class="driver-quick-status">Break - 12 min</div>
+                                    </div>
+                                    <div class="status-dot away"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Drivers Section -->
+                <section class="content-section" id="driversSection">
+                    <div class="section-toolbar">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search drivers...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <div class="toolbar-actions">
+                            <select class="filter-select">
+                                <option>All Drivers</option>
+                                <option>Active</option>
+                                <option>On Break</option>
+                                <option>Offline</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="showSection('assign')">+ Add Driver</button>
+                        </div>
+                    </div>
+
+                    <div class="drivers-grid">
+                        <div class="driver-card">
+                            <div class="driver-card-header">
+                                <div class="driver-avatar-large">JS</div>
+                                <div class="driver-card-status online">Active</div>
+                            </div>
+                            <div class="driver-card-info">
+                                <h3>John Smith</h3>
+                                <div class="driver-detail">📧 john.smith@email.com</div>
+                                <div class="driver-detail">📱 +1 (555) 123-4567</div>
+                                <div class="driver-detail">🆔 DRV-001</div>
+                            </div>
+                            <div class="driver-card-stats">
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">127</div>
+                                    <div class="mini-stat-label">Total Trips</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">8</div>
+                                    <div class="mini-stat-label">Alerts Today</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">92%</div>
+                                    <div class="mini-stat-label">Safety</div>
+                                </div>
+                            </div>
+                            <div class="driver-card-actions">
+                                <button class="btn-action">View Details</button>
+                                <button class="btn-action">View Trips</button>
+                            </div>
+                        </div>
+
+                        <div class="driver-card">
+                            <div class="driver-card-header">
+                                <div class="driver-avatar-large">SJ</div>
+                                <div class="driver-card-status online">Active</div>
+                            </div>
+                            <div class="driver-card-info">
+                                <h3>Sarah Johnson</h3>
+                                <div class="driver-detail">📧 sarah.j@email.com</div>
+                                <div class="driver-detail">📱 +1 (555) 234-5678</div>
+                                <div class="driver-detail">🆔 DRV-002</div>
+                            </div>
+                            <div class="driver-card-stats">
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">143</div>
+                                    <div class="mini-stat-label">Total Trips</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">3</div>
+                                    <div class="mini-stat-label">Alerts Today</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">96%</div>
+                                    <div class="mini-stat-label">Safety</div>
+                                </div>
+                            </div>
+                            <div class="driver-card-actions">
+                                <button class="btn-action">View Details</button>
+                                <button class="btn-action">View Trips</button>
+                            </div>
+                        </div>
+
+                        <div class="driver-card">
+                            <div class="driver-card-header">
+                                <div class="driver-avatar-large">MD</div>
+                                <div class="driver-card-status online">Active</div>
+                            </div>
+                            <div class="driver-card-info">
+                                <h3>Mike Davis</h3>
+                                <div class="driver-detail">📧 mike.davis@email.com</div>
+                                <div class="driver-detail">📱 +1 (555) 345-6789</div>
+                                <div class="driver-detail">🆔 DRV-003</div>
+                            </div>
+                            <div class="driver-card-stats">
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">98</div>
+                                    <div class="mini-stat-label">Total Trips</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">5</div>
+                                    <div class="mini-stat-label">Alerts Today</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">88%</div>
+                                    <div class="mini-stat-label">Safety</div>
+                                </div>
+                            </div>
+                            <div class="driver-card-actions">
+                                <button class="btn-action">View Details</button>
+                                <button class="btn-action">View Trips</button>
+                            </div>
+                        </div>
+
+                        <div class="driver-card">
+                            <div class="driver-card-header">
+                                <div class="driver-avatar-large">EB</div>
+                                <div class="driver-card-status away">On Break</div>
+                            </div>
+                            <div class="driver-card-info">
+                                <h3>Emily Brown</h3>
+                                <div class="driver-detail">📧 emily.b@email.com</div>
+                                <div class="driver-detail">📱 +1 (555) 456-7890</div>
+                                <div class="driver-detail">🆔 DRV-004</div>
+                            </div>
+                            <div class="driver-card-stats">
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">156</div>
+                                    <div class="mini-stat-label">Total Trips</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">1</div>
+                                    <div class="mini-stat-label">Alerts Today</div>
+                                </div>
+                                <div class="mini-stat">
+                                    <div class="mini-stat-value">98%</div>
+                                    <div class="mini-stat-label">Safety</div>
+                                </div>
+                            </div>
+                            <div class="driver-card-actions">
+                                <button class="btn-action">View Details</button>
+                                <button class="btn-action">View Trips</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Trips Section -->
+                <section class="content-section" id="tripsSection">
+                    <div class="section-toolbar">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search trips...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <div class="toolbar-actions">
+                            <select class="filter-select">
+                                <option>All Trips</option>
+                                <option>Active</option>
+                                <option>Completed</option>
+                                <option>With Alerts</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="trips-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Trip ID</th>
+                                    <th>Driver</th>
+                                    <th>Route</th>
+                                    <th>Start Time</th>
+                                    <th>Duration</th>
+                                    <th>Alerts</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="trip-id">TRP-2401</span></td>
+                                    <td>
+                                        <div class="table-driver">
+                                            <div class="driver-avatar-small">JS</div>
+                                            <span>John Smith</span>
+                                        </div>
+                                    </td>
+                                    <td>Highway 101 → Downtown</td>
+                                    <td>10:30 AM</td>
+                                    <td>45 min</td>
+                                    <td><span class="alert-badge high">3</span></td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td><button class="btn-action-sm">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="trip-id">TRP-2402</span></td>
+                                    <td>
+                                        <div class="table-driver">
+                                            <div class="driver-avatar-small">SJ</div>
+                                            <span>Sarah Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td>Route 45 → Central Station</td>
+                                    <td>9:45 AM</td>
+                                    <td>1h 12m</td>
+                                    <td><span class="alert-badge medium">1</span></td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td><button class="btn-action-sm">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="trip-id">TRP-2403</span></td>
+                                    <td>
+                                        <div class="table-driver">
+                                            <div class="driver-avatar-small">MD</div>
+                                            <span>Mike Davis</span>
+                                        </div>
+                                    </td>
+                                    <td>Main St → Airport</td>
+                                    <td>10:52 AM</td>
+                                    <td>23 min</td>
+                                    <td><span class="alert-badge low">2</span></td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td><button class="btn-action-sm">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="trip-id">TRP-2404</span></td>
+                                    <td>
+                                        <div class="table-driver">
+                                            <div class="driver-avatar-small">EB</div>
+                                            <span>Emily Brown</span>
+                                        </div>
+                                    </td>
+                                    <td>North Ave → South Plaza</td>
+                                    <td>8:15 AM</td>
+                                    <td>2h 8m</td>
+                                    <td><span class="alert-badge none">0</span></td>
+                                    <td><span class="status-badge completed">Completed</span></td>
+                                    <td><button class="btn-action-sm">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Alerts Section -->
+                <section class="content-section" id="alertsSection">
+                    <div class="section-toolbar">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search alerts...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <div class="toolbar-actions">
+                            <select class="filter-select">
+                                <option>All Alerts</option>
+                                <option>Phone Usage</option>
+                                <option>Drowsiness</option>
+                                <option>Looking Away</option>
+                                <option>Eating/Drinking</option>
+                            </select>
+                            <select class="filter-select">
+                                <option>Today</option>
+                                <option>This Week</option>
+                                <option>This Month</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="alerts-detailed-list">
+                        <div class="alert-detailed-item high">
+                            <div class="alert-detailed-header">
+                                <div class="alert-left">
+                                    <div class="alert-icon-large">📱</div>
+                                    <div class="alert-main-info">
+                                        <h3>Phone Usage Detected</h3>
+                                        <div class="alert-meta">
+                                            <span class="alert-driver-name">John Smith (DRV-001)</span>
+                                            <span class="alert-separator">•</span>
+                                            <span class="alert-trip">Trip TRP-2401</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert-right">
+                                    <div class="alert-timestamp">2 minutes ago</div>
+                                    <span class="severity-badge high">High Priority</span>
+                                </div>
+                            </div>
+                            <div class="alert-detailed-body">
+                                <div class="alert-info-row">
+                                    <span class="info-label">Location:</span>
+                                    <span class="info-value">Highway 101, Mile 47.3</span>
+                                </div>
+                                <div class="alert-info-row">
+                                    <span class="info-label">Duration:</span>
+                                    <span class="info-value">8 seconds</span>
+                                </div>
+                                <div class="alert-info-row">
+                                    <span class="info-label">Action Taken:</span>
+                                    <span class="info-value">Driver notified via audio alert</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert-detailed-item medium">
+                            <div class="alert-detailed-header">
+                                <div class="alert-left">
+                                    <div class="alert-icon-large">😴</div>
+                                    <div class="alert-main-info">
+                                        <h3>Drowsiness Detected</h3>
+                                        <div class="alert-meta">
+                                            <span class="alert-driver-name">Sarah Johnson (DRV-002)</span>
+                                            <span class="alert-separator">•</span>
+                                            <span class="alert-trip">Trip TRP-2402</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert-right">
+                                    <div class="alert-timestamp">15 minutes ago</div>
+                                    <span class="severity-badge medium">Medium Priority</span>
+                                </div>
+                            </div>
+                            <div class="alert-detailed-body">
+                                <div class="alert-info-row">
+                                    <span class="info-label">Location:</span>
+                                    <span class="info-value">Route 45, Near Exit 12</span>
+                                </div>
+                                <div class="alert-info-row">
+                                    <span class="info-label">Duration:</span>
+                                    <span class="info-value">3 seconds</span>
+                                </div>
+                                <div class="alert-info-row">
+                                    <span class="info-label">Action Taken:</span>
+                                    <span class="info-value">Driver notified, suggested break</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert-detailed-item low">
+                            <div class="alert-detailed-header">
+                                <div class="alert-left">
+                                    <div class="alert-icon-large">👀</div>
+                                    <div class="alert-main-info">
+                                        <h3>Looking Away from Road</h3>
+                                        <div class="alert-meta">
+                                            <span class="alert-driver-name">Mike Davis (DRV-003)</span>
+                                            <span class="alert-separator">•</span>
+                                            <span class="alert-trip">Trip TRP-2403</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert-right">
+                                    <div class="alert-timestamp">28 minutes ago</div>
+                                    <span class="severity-badge low">Low Priority</span>
+                                </div>
+                            </div>
+                            <div class="alert-detailed-body">
+                                <div class="alert-info-row">
+                                    <span class="info-label">Location:</span>
+                                    <span class="info-value">Main Street, Downtown</span>
+                                </div>
+                                <div class="alert-info-row">
+                                    <span class="info-label">Duration:</span>
+                                    <span class="info-value">4 seconds</span>
+                                </div>
+                                <div class="alert-info-row">
+                                    <span class="info-label">Action Taken:</span>
+                                    <span class="info-value">Warning displayed on dashboard</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert-detailed-item medium">
+                            <div class="alert-detailed-header">
+                                <div class="alert-left">
+                                    <div class="alert-icon-large">🍔</div>
+                                    <div class="alert-main-info">
+                                        <h3>Eating/Drinking Detected</h3>
+                                        <div class="alert-meta">
+                                            <span class="alert-driver-name">Robert Wilson (DRV-005)</span>
+                                            <span class="alert-separator">•</span>
+                                            <span class="alert-trip">Trip TRP-2405</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert-right">
+                                    <div class="alert-timestamp">1 hour ago</div>
+                                    <span class="severity-badge medium">Medium Priority</span>
+                                </div>
+                            </div>
+                            <div class="alert-detailed-body">
+                                <div class="alert-info-row">
+                                    <span class="info-label">Location:</span>
+                                    <span class="info-value">Interstate 5, Mile 89</span>
+                                </div>
+                                <div class="alert-info-row">
+                                    <span class="info-label">Duration:</span>
+                                    <span class="info-value">12 seconds</span>
+                                </div>
+                                <div class="alert-info-row">
+                                    <span class="info-label">Action Taken:</span>
+                                    <span class="info-value">Driver notified, reminder sent</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Assign Drivers Section -->
+                <section class="content-section" id="assignSection">
+                    <div class="assign-container">
+                        <div class="assign-header">
+                            <h2>Assign New Driver</h2>
+                            <p>Provide your unique company code to drivers to assign them to your monitoring system</p>
+                        </div>
+
+                        <div class="company-code-display">
+                            <div class="code-card">
+                                <h3>Your Company Code</h3>
+                                <div class="code-display-large">AC-2024-7891</div>
+                                <p>Share this code with drivers to link them to your company account</p>
+                                <div class="code-actions">
+                                    <button class="btn btn-primary">📋 Copy Code</button>
+                                    <button class="btn btn-secondary">📧 Email Code</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="assign-instructions">
+                            <h3>How to Assign a Driver</h3>
+                            <div class="instruction-steps">
+                                <div class="instruction-step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h4>Share Company Code</h4>
+                                        <p>Provide the company code above to your driver via email or text message</p>
+                                    </div>
+                                </div>
+                                <div class="instruction-step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h4>Driver Registration</h4>
+                                        <p>Driver downloads the mobile app and registers using the company code</p>
+                                    </div>
+                                </div>
+                                <div class="instruction-step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h4>Automatic Assignment</h4>
+                                        <p>Driver will automatically appear in your dashboard within minutes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pending-assignments">
+                            <h3>Pending Assignments</h3>
+                            <div class="pending-list">
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <div class="pending-name">James Wilson</div>
+                                        <div class="pending-email">james.w@email.com</div>
+                                    </div>
+                                    <div class="pending-status">Awaiting Verification</div>
+                                    <div class="pending-actions">
+                                        <button class="btn-action-sm approve">✓ Approve</button>
+                                        <button class="btn-action-sm reject">✗ Reject</button>
+                                    </div>
+                                </div>
+                                <div class="pending-item">
+                                    <div class="pending-info">
+                                        <div class="pending-name">Lisa Anderson</div>
+                                        <div class="pending-email">lisa.a@email.com</div>
+                                    </div>
+                                    <div class="pending-status">Awaiting Verification</div>
+                                    <div class="pending-actions">
+                                        <button class="btn-action-sm approve">✓ Approve</button>
+                                        <button class="btn-action-sm reject">✗ Reject</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Support Section -->
+                <section class="content-section" id="supportSection">
+                    <div class="support-container">
+                        <div class="support-sidebar">
+                            <div class="support-tabs">
+                                <button class="support-tab active" onclick="showSupportTab('chat')">
+                                    💬 Live Chat
+                                    <span class="support-badge">3</span>
+                                </button>
+                                <button class="support-tab" onclick="showSupportTab('tickets')">
+                                    🎫 Support Tickets
+                                    <span class="support-badge">8</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="support-content">
+                            <!-- Chat Tab -->
+                            <div class="support-tab-content active" id="chatTab">
+                                <div class="chat-list">
+                                    <h3>Active Conversations</h3>
+                                    <div class="chat-item active">
+                                        <div class="chat-avatar">JS</div>
+                                        <div class="chat-item-content">
+                                            <div class="chat-item-header">
+                                                <span class="chat-name">John Smith</span>
+                                                <span class="chat-time">2 min ago</span>
+                                            </div>
+                                            <div class="chat-preview">Camera not working properly on route...</div>
+                                        </div>
+                                        <div class="unread-badge">1</div>
+                                    </div>
+                                    <div class="chat-item">
+                                        <div class="chat-avatar">MD</div>
+                                        <div class="chat-item-content">
+                                            <div class="chat-item-header">
+                                                <span class="chat-name">Mike Davis</span>
+                                                <span class="chat-time">1 hour ago</span>
+                                            </div>
+                                            <div class="chat-preview">Question about break policies...</div>
+                                        </div>
+                                    </div>
+                                    <div class="chat-item">
+                                        <div class="chat-avatar">EB</div>
+                                        <div class="chat-item-content">
+                                            <div class="chat-item-header">
+                                                <span class="chat-name">Emily Brown</span>
+                                                <span class="chat-time">3 hours ago</span>
+                                            </div>
+                                            <div class="chat-preview">Thanks for the help!</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="chat-window">
+                                    <div class="chat-header">
+                                        <div class="chat-user-info">
+                                            <div class="chat-avatar-large">JS</div>
+                                            <div>
+                                                <div class="chat-user-name">John Smith</div>
+                                                <div class="chat-user-status">🟢 Online</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="chat-messages">
+                                        <div class="chat-message driver">
+                                            <div class="message-bubble">
+                                                Hi, I'm having issues with the camera system in my vehicle. It keeps showing an error message.
+                                            </div>
+                                            <div class="message-time">10:45 AM</div>
+                                        </div>
+                                        <div class="chat-message company">
+                                            <div class="message-bubble">
+                                                Hello John! I'm sorry to hear that. Can you describe what the error message says?
+                                            </div>
+                                            <div class="message-time">10:46 AM</div>
+                                        </div>
+                                        <div class="chat-message driver">
+                                            <div class="message-bubble">
+                                                It says "Camera Connection Lost" and appears about every 15 minutes during my route.
+                                            </div>
+                                            <div class="message-time">10:48 AM</div>
+                                        </div>
+                                        <div class="chat-message company">
+                                            <div class="message-bubble">
+                                                Thank you for the details. Let me check your vehicle's connection status. This might be a loose cable issue. I'll send a technician to inspect it.
+                                            </div>
+                                            <div class="message-time">10:50 AM</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="chat-input">
+                                        <input type="text" placeholder="Type your message...">
+                                        <button class="btn-send">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tickets Tab -->
+                            <div class="support-tab-content" id="ticketsTab">
+                                <div class="tickets-header">
+                                    <h3>Support Tickets</h3>
+                                    <div class="tickets-filters">
+                                        <select class="filter-select">
+                                            <option>All Status</option>
+                                            <option>Open</option>
+                                            <option>In Progress</option>
+                                            <option>Resolved</option>
+                                        </select>
+                                        <select class="filter-select">
+                                            <option>All Priority</option>
+                                            <option>High</option>
+                                            <option>Medium</option>
+                                            <option>Low</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="tickets-list">
+                                    <div class="ticket-item">
+                                        <div class="ticket-header">
+                                            <div class="ticket-id">#TKT-1247</div>
+                                            <span class="ticket-priority high">High Priority</span>
+                                        </div>
+                                        <div class="ticket-title">Camera malfunction during trip</div>
+                                        <div class="ticket-meta">
+                                            <span class="ticket-driver">
+                                                <div class="driver-avatar-tiny">JS</div>
+                                                John Smith
+                                            </span>
+                                            <span class="ticket-date">Today, 10:45 AM</span>
+                                        </div>
+                                        <div class="ticket-status-bar">
+                                            <span class="ticket-status open">Open</span>
+                                            <button class="btn-action-sm">View Details</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="ticket-item">
+                                        <div class="ticket-header">
+                                            <div class="ticket-id">#TKT-1246</div>
+                                            <span class="ticket-priority medium">Medium Priority</span>
+                                        </div>
+                                        <div class="ticket-title">Question about alert sensitivity settings</div>
+                                        <div class="ticket-meta">
+                                            <span class="ticket-driver">
+                                                <div class="driver-avatar-tiny">SJ</div>
+                                                Sarah Johnson
+                                            </span>
+                                            <span class="ticket-date">Yesterday, 3:20 PM</span>
+                                        </div>
+                                        <div class="ticket-status-bar">
+                                            <span class="ticket-status in-progress">In Progress</span>
+                                            <button class="btn-action-sm">View Details</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="ticket-item">
+                                        <div class="ticket-header">
+                                            <div class="ticket-id">#TKT-1245</div>
+                                            <span class="ticket-priority low">Low Priority</span>
+                                        </div>
+                                        <div class="ticket-title">Request for trip history export</div>
+                                        <div class="ticket-meta">
+                                            <span class="ticket-driver">
+                                                <div class="driver-avatar-tiny">MD</div>
+                                                Mike Davis
+                                            </span>
+                                            <span class="ticket-date">2 days ago</span>
+                                        </div>
+                                        <div class="ticket-status-bar">
+                                            <span class="ticket-status resolved">Resolved</span>
+                                            <button class="btn-action-sm">View Details</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="ticket-item">
+                                        <div class="ticket-header">
+                                            <div class="ticket-id">#TKT-1244</div>
+                                            <span class="ticket-priority medium">Medium Priority</span>
+                                        </div>
+                                        <div class="ticket-title">Audio alert volume too low</div>
+                                        <div class="ticket-meta">
+                                            <span class="ticket-driver">
+                                                <div class="driver-avatar-tiny">EB</div>
+                                                Emily Brown
+                                            </span>
+                                            <span class="ticket-date">3 days ago</span>
+                                        </div>
+                                        <div class="ticket-status-bar">
+                                            <span class="ticket-status resolved">Resolved</span>
+                                            <button class="btn-action-sm">View Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Section Navigation
+        function showSection(sectionName) {
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item').classList.add('active');
+
+            // Update sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionName + 'Section').classList.add('active');
+
+            // Update page title
+            const titles = {
+                'overview': 'Dashboard Overview',
+                'drivers': 'Drivers Management',
+                'trips': 'Trip Monitoring',
+                'alerts': 'Distraction Alerts',
+                'assign': 'Assign Drivers',
+                'support': 'Customer Support'
+            };
+            document.getElementById('pageTitle').textContent = titles[sectionName];
+        }
+
+        // Support Tabs
+        function showSupportTab(tabName) {
+            document.querySelectorAll('.support-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.support-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Form Submissions
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showPage('dashboardPage');
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showPage('dashboardPage');
+        });
+    </script>
+</body>
+</html>
