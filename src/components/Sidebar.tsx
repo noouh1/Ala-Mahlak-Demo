@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Users, Car, UserPlus, MessageCircle, LogOut, X, UserCircle2, Loader2
+  LayoutDashboard, Users, Car, UserPlus, MessageCircle, LogOut, X, UserCircle2, Loader2, Building2
 } from 'lucide-react';
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
@@ -11,6 +11,7 @@ import { logoutCompany, clearSession } from '../services/authService';
 
 const navItems = [
   { path: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
+  { path: '/companies', icon: Building2, label: 'Companies' },
   { path: '/drivers', icon: Users, label: 'Drivers' },
   { path: '/trips', icon: Car, label: 'Trip Monitoring' },
   { path: '/assign', icon: UserPlus, label: 'Assign Drivers' },

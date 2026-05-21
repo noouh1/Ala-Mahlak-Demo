@@ -5,6 +5,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
+import Companies from './pages/Companies';
 import Drivers from './pages/Drivers';
 import TripMonitoring from './pages/TripMonitoring';
 import Alerts from './pages/Alerts';
@@ -39,6 +40,7 @@ export default function App() {
       <Route path="/" element={<RequireAuth><Layout /></RequireAuth>}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="companies" element={<Companies />} />
         <Route path="drivers" element={<Drivers />} />
         <Route path="drivers/:id" element={<DriverDetails />} />
         <Route path="trips" element={<TripMonitoring />} />

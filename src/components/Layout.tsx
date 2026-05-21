@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/dashboard': { title: 'Dashboard Overview', subtitle: 'Real-time monitoring of your fleet' },
+  '/companies': { title: 'Companies', subtitle: 'Manage admins, logo, and company reports' },
   '/drivers': { title: 'Drivers Management', subtitle: 'Manage and monitor all your drivers' },
   '/trips': { title: 'Trip Monitoring', subtitle: 'Track active and completed trips' },
   '/alerts': { title: 'Distraction Alerts', subtitle: 'Review and manage safety alerts' },
