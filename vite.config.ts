@@ -7,5 +7,16 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-  ]
+  ],
+  server: {
+    proxy: {
+      // All requests to /api/* are forwarded to the backend.
+      // The browser sees them as same-origin → no CORS preflight.
+      '/api': {
+        target: 'https://ala-mahlak.runasp.net',
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
 })

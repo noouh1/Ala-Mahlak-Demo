@@ -1,18 +1,32 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff, Car } from 'lucide-react';
+import { Eye, EyeOff, Car, AlertCircle, Loader2 } from 'lucide-react';
 import logoAnimation from '../assets/Ala Mahla 1st Logo Animation.gif';
 import { motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/dashboard');
+    setError('');
+    setLoading(true);
+    try {
+      await login({ email, password });
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -25,21 +39,18 @@ export default function Login() {
     >
       {/* Left Panel */}
       <div className="hidden lg:flex flex-col justify-between w-[45%] bg-[#0f1923] p-12 relative overflow-hidden">
-        {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-blue-500/10 blur-3xl" />
           <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-blue-600/5 blur-3xl" />
         </div>
 
-        {/* Logo */}
         <div className="relative z-10 flex items-center gap-3">
-          <div className="w-40  flex items-center justify-center">
+          <div className="w-40 flex items-center justify-center">
             <img src={logoAnimation} alt="Logo" />
           </div>
         </div>
 
-        {/* Center content */}
         <div className="relative z-10 space-y-8">
           <div>
             <h2 className="text-4xl font-bold text-white leading-tight">
@@ -50,14 +61,12 @@ export default function Login() {
               AI-powered driver monitoring that keeps your fleet safe and your business running smoothly.
             </p>
           </div>
-
-          {/* Feature list */}
           <div className="space-y-4">
             {[
-              { icon: '', text: 'Real-time distraction detection' },
-              { icon: '', text: 'Live trip monitoring & routing' },
-              { icon: '', text: 'Comprehensive safety analytics' },
-              { icon: '', text: 'Instant alert notifications' },
+              { icon: '🎯', text: 'Real-time distraction detection' },
+              { icon: '🗺️', text: 'Live trip monitoring & routing' },
+              { icon: '📊', text: 'Comprehensive safety analytics' },
+              { icon: '🔔', text: 'Instant alert notifications' },
             ].map(f => (
               <div key={f.text} className="flex items-center gap-3">
                 <span className="text-xl">{f.icon}</span>
@@ -65,7 +74,6 @@ export default function Login() {
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10"></div>
         </div>
 
         <div className="relative z-10 text-slate-600 text-sm">
@@ -76,7 +84,6 @@ export default function Login() {
       {/* Right Panel */}
       <div className="flex-1 flex items-center justify-center p-8 bg-slate-50">
         <div className="w-full max-w-md">
-          {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-2 mb-8">
             <div className="w-9 h-9 rounded-xl bg-blue-500 flex items-center justify-center">
               <Car size={18} className="text-white" />
@@ -89,6 +96,17 @@ export default function Login() {
             <p className="text-slate-500 mt-1 text-sm">Sign in to your company account</p>
           </div>
 
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-5 flex items-start gap-3 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"
+            >
+              <AlertCircle size={16} className="mt-0.5 shrink-0" />
+              <span>{error}</span>
+            </motion.div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Email Address</label>
@@ -98,7 +116,8 @@ export default function Login() {
                 onChange={e => setEmail(e.target.value)}
                 placeholder="company@example.com"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
+                disabled={loading}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition disabled:opacity-60"
               />
             </div>
 
@@ -111,7 +130,8 @@ export default function Login() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   required
-                  className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
+                  disabled={loading}
+                  className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition disabled:opacity-60"
                 />
                 <button
                   type="button"
@@ -128,16 +148,27 @@ export default function Login() {
                 <input type="checkbox" className="rounded border-slate-300 text-blue-500" />
                 <span className="text-sm text-slate-600">Remember me</span>
               </label>
-              <a href="#" className="text-sm text-blue-500 hover:text-blue-600 font-medium">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-blue-500 hover:text-blue-600 font-medium transition"
+              >
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5"
+              disabled={loading}
+              className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-600 disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold text-sm transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-0.5 flex items-center justify-center gap-2"
             >
-              Sign In to Dashboard
+              {loading ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  Signing in…
+                </>
+              ) : (
+                'Sign In to Dashboard'
+              )}
             </button>
           </form>
 

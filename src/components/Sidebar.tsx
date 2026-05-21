@@ -1,10 +1,12 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Users, Car, UserPlus, MessageCircle, LogOut, X, UserCircle2
+  LayoutDashboard, Users, Car, UserPlus, MessageCircle, LogOut, X, UserCircle2, Loader2
 } from 'lucide-react';
 import type { MouseEventHandler } from 'react';
+import { useState } from 'react';
 import logoAnimation from '../assets/Ala Mahla 1st Logo Animation.gif';
 import { AnimatePresence, motion } from 'framer-motion';
+import { logoutCompany, clearSession } from '../services/authService';
 
 
 const navItems = [
@@ -22,6 +24,20 @@ type Props = {
 
 export default function Sidebar({ isOpen = false, onClose }: Props) {
   const navigate = useNavigate();
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await logoutCompany();
+    } catch (err) {
+      console.error('Logout error:', err);
+    } finally {
+      clearSession();
+      navigate('/login');
+      setLoggingOut(false);
+    }
+  };
 
   const inner = (
     <>
@@ -89,11 +105,12 @@ export default function Sidebar({ isOpen = false, onClose }: Props) {
           <span>Profile</span>
         </button>
         <button
-          onClick={() => navigate('/login')}
-          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-500 transition-all duration-150 hover:bg-rose-50 hover:text-rose-600"
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-500 transition-all duration-150 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          <LogOut size={15} />
-          <span>Logout</span>
+          {loggingOut ? <Loader2 size={15} className="animate-spin" /> : <LogOut size={15} />}
+          <span>{loggingOut ? 'Logging out...' : 'Logout'}</span>
         </button>
       </div>
     </>

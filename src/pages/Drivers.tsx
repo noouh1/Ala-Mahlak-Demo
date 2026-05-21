@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Filter, UserPlus } from 'lucide-react';
-import { drivers, type DriverStatus } from '../data/mockData';
+import { getCompanyDrivers, type CompanyDriver } from '../services/authService';
 
-const statusConfig: Record<DriverStatus, { label: string; class: string; dot: string }> = {
+const statusConfig = {
   active: { label: 'Active', class: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500 pulse-dot' },
-  break: { label: 'On Break', class: 'bg-amber-100 text-amber-700', dot: 'bg-amber-500' },
   offline: { label: 'Offline', class: 'bg-slate-100 text-slate-500', dot: 'bg-slate-400' },
 };
 
@@ -13,21 +12,49 @@ const statusConfig: Record<DriverStatus, { label: string; class: string; dot: st
 export default function Drivers() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState<'all' | DriverStatus>('all');
+  const [filter, setFilter] = useState<'all' | 'active' | 'offline'>('all');
+  const [drivers, setDrivers] = useState<CompanyDriver[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const filtered = drivers.filter(d => {
-    const matchSearch = d.name.toLowerCase().includes(search.toLowerCase()) ||
-      d.driverId.toLowerCase().includes(search.toLowerCase());
-    const matchFilter = filter === 'all' || d.status === filter;
+    const matchSearch = [d.name, d.email, d.phoneNumber, d.role, d.compCode]
+      .some(value => value.toLowerCase().includes(search.toLowerCase()));
+    const status = d.isActive ? 'active' : 'offline';
+    const matchFilter = filter === 'all' || status === filter;
     return matchSearch && matchFilter;
   });
 
   const counts = {
     all: drivers.length,
-    active: drivers.filter(d => d.status === 'active').length,
-    break: drivers.filter(d => d.status === 'break').length,
-    offline: drivers.filter(d => d.status === 'offline').length,
+    active: drivers.filter(d => d.isActive).length,
+    offline: drivers.filter(d => !d.isActive).length,
   };
+
+  const formatInitials = (driver: CompanyDriver) =>
+    driver.name
+      .split(' ')
+      .map(part => part[0] ?? '')
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+
+  const loadDrivers = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await getCompanyDrivers();
+      setDrivers(response);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load drivers');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadDrivers();
+  }, [loadDrivers]);
 
   return (
     <div className="space-y-5">
@@ -47,7 +74,7 @@ export default function Drivers() {
 
         {/* Filter tabs */}
         <div className="flex bg-white border border-slate-200 rounded-xl p-1 gap-0.5">
-          {(['all', 'active', 'break', 'offline'] as const).map(f => (
+          {(['all', 'active', 'offline'] as const).map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
@@ -57,7 +84,7 @@ export default function Drivers() {
                   : 'text-slate-500 hover:text-slate-700'
               }`}
             >
-              {f === 'all' ? 'All' : f === 'break' ? 'On Break' : f.charAt(0).toUpperCase() + f.slice(1)}
+              {f === 'all' ? 'All' : f === 'offline' ? 'Inactive' : 'Active'}
               <span className={`ml-1.5 ${filter === f ? 'text-blue-200' : 'text-slate-400'}`}>
                 {counts[f]}
               </span>
@@ -82,7 +109,7 @@ export default function Drivers() {
 
       {/* Results count */}
       <div className="text-xs text-slate-400">
-        Showing <span className="font-semibold text-slate-600">{filtered.length}</span> of {drivers.length} drivers
+        {loading ? 'Loading drivers…' : `Showing ${filtered.length} of ${drivers.length} drivers`}
       </div>
 
       {/* KPI cards */}
@@ -101,13 +128,25 @@ export default function Drivers() {
 
         <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
           <div className="text-sm text-slate-500">Available</div>
-          <div className="mt-1 text-2xl font-semibold text-slate-900">{counts.break + counts.offline}</div>
+          <div className="mt-1 text-2xl font-semibold text-slate-900">{counts.offline}</div>
           <div className="text-xs mt-1 text-slate-500">Ready for assignment</div>
         </div>
       </div>
 
       {/* Table list */}
-      {filtered.length === 0 ? (
+      {loading ? (
+        <div className="bg-white rounded-2xl p-12 text-center border border-slate-100">
+          <div className="text-slate-300 text-4xl mb-3">⏳</div>
+          <div className="text-slate-500 font-medium">Loading drivers</div>
+          <div className="text-slate-400 text-sm mt-1">Please wait while we fetch your company drivers.</div>
+        </div>
+      ) : error ? (
+        <div className="bg-white rounded-2xl p-12 text-center border border-rose-100">
+          <div className="text-rose-500 text-4xl mb-3">⚠️</div>
+          <div className="text-slate-500 font-medium">Unable to load drivers</div>
+          <div className="text-slate-400 text-sm mt-1">{error}</div>
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="bg-white rounded-2xl p-12 text-center border border-slate-100">
           <div className="text-slate-300 text-4xl mb-3">👤</div>
           <div className="text-slate-500 font-medium">No drivers found</div>
@@ -124,36 +163,40 @@ export default function Drivers() {
               <tr>
                 <th className="px-6 py-3 text-left">Driver</th>
                 <th className="px-6 py-3 text-left">Contact</th>
-                <th className="px-6 py-3 text-left">Vehicle</th>
+                <th className="px-6 py-3 text-left">Company Code</th>
                 <th className="px-6 py-3 text-left">Status</th>
-                <th className="px-6 py-3 text-left">Stats</th>
+                <th className="px-6 py-3 text-left">Joined</th>
                 <th className="px-6 py-3 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map(d => {
-                const sc = statusConfig[d.status];
+                const sc = statusConfig[d.isActive ? 'active' : 'offline'];
                 return (
                   <tr key={d.id} className="border-b border-slate-100 hover:bg-slate-50">
                     <td className="px-6 py-4 align-top">
                       <div className="flex items-center gap-3">
-                        <div
-                          className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-white"
-                          style={{ background: d.color }}
-                        >
-                          {d.initials}
-                        </div>
+                        {d.profilePhoto ? (
+                          <img src={d.profilePhoto} alt={d.name} className="h-10 w-10 rounded-full object-cover" />
+                        ) : (
+                          <div
+                            className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold text-white"
+                            style={{ background: '#4f7df3' }}
+                          >
+                            {formatInitials(d)}
+                          </div>
+                        )}
                         <div>
                           <div className="font-semibold text-slate-800">{d.name}</div>
-                          <div className="text-xs text-slate-400">{d.driverId}</div>
+                          <div className="text-xs text-slate-400">{d.role}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 align-top">
                       <div className="text-xs text-slate-600">{d.email}</div>
-                      <div className="text-xs text-slate-400 mt-1">{d.phone}</div>
+                      <div className="text-xs text-slate-400 mt-1">{d.phoneNumber}</div>
                     </td>
-                    <td className="px-6 py-4 align-top text-slate-600">{d.driverId}</td>
+                    <td className="px-6 py-4 align-top text-slate-600">{d.compCode}</td>
                     <td className="px-6 py-4 align-top">
                       <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${sc.class}`}>
                         <span className={`h-2 w-2 rounded-full ${sc.dot}`} />
@@ -161,11 +204,16 @@ export default function Drivers() {
                       </div>
                     </td>
                     <td className="px-6 py-4 align-top text-slate-600">
-                      <div className="text-sm font-semibold">{d.totalTrips} trips</div>
-                      <div className="text-xs text-amber-600 mt-1">{d.todayAlerts} alerts</div>
+                      <div className="text-sm font-semibold">{new Date(d.createdAt).toLocaleDateString()}</div>
+                      <div className="text-xs text-slate-500 mt-1">Joined</div>
                     </td>
                     <td className="px-6 py-4 align-top text-indigo-600 font-medium">
-                      <button onClick={() => navigate('/drivers')} className="text-sm hover:underline">View Details</button>
+                      <button
+                        onClick={() => navigate(`/drivers/${d.id}`, { state: { driver: d } })}
+                        className="text-sm hover:underline"
+                      >
+                        View Details
+                      </button>
                     </td>
                   </tr>
                 );
